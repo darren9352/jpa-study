@@ -4,6 +4,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.List;
+import java.util.Set;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -14,17 +16,23 @@ public class JpaMain {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
 
-        try{
+        try {
             Member member = new Member();
-            member.setUsername("B");
-            System.out.println("===========================");
+            member.setUsername("member1");
+
             em.persist(member);
-            System.out.println(member.getId());
-            System.out.println("===========================");
+
+            Team team = new Team();
+            team.setName("teamA");
+            //
+            team.getMembers().add(member);
+
+            em.persist(team);
+
             tx.commit();
-        }catch(Exception e){
+        } catch (Exception e) {
             tx.rollback();
-        }finally {
+        } finally {
             em.close();
         }
 
